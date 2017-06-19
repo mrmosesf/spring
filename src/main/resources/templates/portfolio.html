@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Title</title>
+<head th:include="fragments :: head">
+    <title>Portfolio</title>
 </head>
 <body>
-
+<nav th:replace="fragments :: navbar"></nav>
+<h1>Oh look, a portfolio!</h1>
+<footer th:replace="fragments :: footer"></footer>
 </body>
 </html>
