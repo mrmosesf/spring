@@ -41,11 +41,40 @@ public class HomeController {
 
 		model.addAttribute("number", guess);
 		model.addAttribute("random", randomNumber);
+		model.addAttribute("action", "The dice rolled: ");
 
 		if (guess == randomNumber) {
 			model.addAttribute("message", "You guessed correctly!");
 		} else {
 			model.addAttribute("message", "Guess again!");
+		}
+		return "roll-dice";
+	}
+
+	@GetMapping("/roll-dice/bonus/{guess}")
+	public String bonusPickedNumber(@PathVariable int guess, Model model) {
+
+		int numberOfDice = (int) Math.floor(Math.random() * (10 - 1 + 1) + 1);
+		int randomNumber;
+		int correctGuesses = 0;
+
+		for (int i = 0; i < numberOfDice; i++){
+			randomNumber = (int) Math.floor(Math.random() * (6 - 1 + 1) + 1);
+			if(randomNumber == guess){
+				correctGuesses++;
+			}
+		}
+
+		model.addAttribute("action", "How many dices you got right: ");
+		model.addAttribute("number", guess);
+		model.addAttribute("dice", numberOfDice);
+		model.addAttribute("result", correctGuesses);
+		model.addAttribute("outOf", " out of ");
+
+		if (correctGuesses > 0) {
+			model.addAttribute("message", "You guessed some rolls correctly!");
+		} else {
+			model.addAttribute("message", "Wow, that's some bad luck");
 		}
 		return "roll-dice";
 	}
