@@ -1,10 +1,17 @@
 package com.codeup.controllers;
 
+import com.codeup.models.Post;
+import com.codeup.svcs.PostSvc;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Moses Franco on 6/19/17
@@ -14,17 +21,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class PostsController {
+	private final PostSvc postsDao;
+
+	@Autowired
+	public PostsController(PostSvc postsDao){
+		this.postsDao = postsDao;
+	}
 
 	@GetMapping("/posts")
-	@ResponseBody
-	public String indexPosts() {
-		return "posts index page";
+	public String indexPosts(Model model) {
+		List<Post> posts = postsDao.findAll();
+		model.addAttribute("post", posts);
+		return "posts/index";
 	}
 
 	@GetMapping("/posts/{id}")
-	@ResponseBody
-	public String viewPost(@PathVariable String id) {
-		return String.format("view an individual post: %s", id);
+	public String viewPost(@PathVariable long id, Model model) {
+		model.addAttribute("post", postsDao.findOne(id));
+		return "posts/single";
 	}
 
 	@GetMapping("/posts/create")
