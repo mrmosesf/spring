@@ -44,6 +44,16 @@
     </div><!-- /.container-fluid -->
 </nav>
 
+<form th:fragment="form">
+    Title:
+    <input th:field="*{title}"/>
+    <br/>
+    Description:
+    <input th:field="*{text}"/>
+    <br/>
+    <input type="submit"/>
+</form>
+
 <footer class="footer">
     <div class="container">
         <span class="text-muted">Moses</span>
