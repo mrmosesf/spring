@@ -2,13 +2,11 @@ package com.codeup.controllers;
 
 import com.codeup.models.Post;
 import com.codeup.svcs.PostSvc;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +22,14 @@ public class PostsController {
 	private final PostSvc postsDao;
 
 	@Autowired
-	public PostsController(PostSvc postsDao){
+	public PostsController(PostSvc postsDao) {
 		this.postsDao = postsDao;
 	}
 
 	@GetMapping("/posts")
 	public String indexPosts(Model model) {
+
+//		Did this in two lines because okay
 		List<Post> posts = postsDao.findAll();
 		model.addAttribute("post", posts);
 		return "posts/index";
@@ -37,18 +37,27 @@ public class PostsController {
 
 	@GetMapping("/posts/{id}")
 	public String viewPost(@PathVariable long id, Model model) {
+//		Did this in on-line because I learned since the last time adding an attribute to the model
 		model.addAttribute("post", postsDao.findOne(id));
 		return "posts/single";
 	}
 
 	@GetMapping("/posts/create")
-	@ResponseBody
-	public String createForm() {
-		return "view the form for creating a post";
+	public String createForm(Model model) {
+		model.addAttribute("post", new Post());
+		return "posts/create";
 	}
 
 	@PostMapping("/posts/create")
-	public String saveForm(){
-		return "create a new post";
+	public String saveForm(@RequestParam(name = "title") String title, @RequestParam(name = "text") String text, Model model) {
+		Post post = new Post(title, text);
+		model.addAttribute("post", post);
+		return "posts/create";
+	}
+
+	@GetMapping("/posts/edit/{id}")
+	public String editForm(@PathVariable long id, Model model){
+		model.addAttribute("post", postsDao.findOne(id));
+		return "posts/edit";
 	}
 }
