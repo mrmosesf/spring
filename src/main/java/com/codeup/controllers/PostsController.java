@@ -30,6 +30,8 @@ public class PostsController {
 
 	@GetMapping("/posts")
 	public String indexPosts(Model model) {
+
+//		Did this in two lines because okay
 		List<Post> posts = postsDao.findAll();
 		model.addAttribute("post", posts);
 		return "posts/index";
@@ -37,6 +39,7 @@ public class PostsController {
 
 	@GetMapping("/posts/{id}")
 	public String viewPost(@PathVariable long id, Model model) {
+//		Did this in on-line because I learned since the last time adding an attribute to the model
 		model.addAttribute("post", postsDao.findOne(id));
 		return "posts/single";
 	}
