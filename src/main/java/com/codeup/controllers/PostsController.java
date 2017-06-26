@@ -21,6 +21,7 @@ import java.util.List;
 public class PostsController {
 	private final PostSvc postsDao;
 
+
 	@Autowired
 	public PostsController(PostSvc postsDao) {
 		this.postsDao = postsDao;
@@ -30,7 +31,7 @@ public class PostsController {
 	public String indexPosts(Model model) {
 
 //		Did this in two lines because okay
-		List<Post> posts = postsDao.findAll();
+		Iterable<Post> posts = postsDao.findAll();
 		model.addAttribute("post", posts);
 		return "posts/index";
 	}
@@ -55,9 +56,22 @@ public class PostsController {
 		return "posts/create";
 	}
 
-	@GetMapping("/posts/edit/{id}")
-	public String editForm(@PathVariable long id, Model model){
+	@GetMapping("/posts/{id}/edit")
+	public String editForm(@PathVariable long id, Model model) {
 		model.addAttribute("post", postsDao.findOne(id));
 		return "posts/edit";
+	}
+
+	@PostMapping("/posts/{id}/edit")
+	public String editPost(@ModelAttribute Post post) {
+		postsDao.save(post);
+		return "redirect:/posts/" + post.getId();
+	}
+
+	@PostMapping("posts/delete")
+	public String deletePost(@ModelAttribute Post post, Model model){
+		postsDao.deletePost(post.getId());
+		model.addAttribute("msg", "Success! Post delete");
+		return "posts/index";
 	}
 }
