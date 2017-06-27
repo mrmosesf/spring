@@ -12,6 +12,7 @@
 <div th:each="post : ${post}">
     <h2>Title: <span th:text="${post.title}"></span></h2>
     <h2>Body: <span th:text="${post.text}"></span></h2>
+    <h3>Email: <span th:text="${post.user.email}"></span></h3>
 </div>
 
 </body>
