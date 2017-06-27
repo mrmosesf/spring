@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="'Ooops, ' + ${error}"></title>
+</head>
+<body>
+<th:block th:switch="${error}">
+    <div th:case="'Internal Server Error'">
+        <h1>Uh oh, that shouldn't be happening</h1>
+    </div>
+    <div th:case="'Not Implemented'">
+        <h1>I'm sorry Dave, I'm afraid I can't do that</h1>
+    </div>
+    <div th:case="'Bad Gateway'">
+        <h1>What did you do? That's an invalid response</h1>
+    </div>
+</th:block>
+<p>Watch a video instead</p>
+<iframe
+        width="420"
+        height="315"
+        src="https://www.youtube.com/embed/NN75im_us4k?autoplay=1"
+        frameborder="0"
+        allowfullscreen="allowfullscreen"
+>
+</iframe>
+</body>
+</html>
