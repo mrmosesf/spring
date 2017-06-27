@@ -7,12 +7,14 @@
 </head>
 <body>
 <nav th:replace="fragments :: navbar"></nav>
-<form action="/posts/create" method="post" th:object="${post}">
+<form th:action="@{/posts/create}" th:method="POST" th:object="${post}">
     Title:
     <input th:field="*{title}"/>
+    <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" />
     <br/>
     Description:
     <input th:field="*{text}"/>
+    <p th:if="${#fields.hasErrors('text')}" th:errors="*{text}" />
     <br/>
     <input type="submit"/>
 </form>
