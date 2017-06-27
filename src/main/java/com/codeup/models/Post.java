@@ -1,5 +1,7 @@
 package com.codeup.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,7 +28,8 @@ public class Post {
 	@Column(nullable = false, columnDefinition = "text")
 	private String text;
 
-	@OneToOne
+	@ManyToOne
+	@JsonManagedReference
 	private User user;
 
 	public Post(String title, String text, User user) {
