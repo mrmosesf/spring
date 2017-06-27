@@ -1,13 +1,18 @@
 package com.codeup.controllers;
 
 import com.codeup.models.Post;
+import com.codeup.models.User;
+import com.codeup.repositories.UsersRepository;
 import com.codeup.svcs.PostSvc;
 import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +24,15 @@ import java.util.List;
 
 @Controller
 public class PostsController {
+
 	private final PostSvc postsDao;
+	private final UsersRepository usersDao;
 
 
 	@Autowired
-	public PostsController(PostSvc postsDao) {
+	public PostsController(PostSvc postsDao, UsersRepository usersDao) {
 		this.postsDao = postsDao;
+		this.usersDao = usersDao;
 	}
 
 	@GetMapping("/posts")
@@ -50,10 +58,23 @@ public class PostsController {
 	}
 
 	@PostMapping("/posts/create")
-	public String saveForm(@RequestParam(name = "title") String title, @RequestParam(name = "text") String text, Model model) {
-		Post post = new Post(title, text);
+	public String saveForm(@RequestParam(name = "title") String title,
+	                       @RequestParam(name = "text") String text,
+	                       @Valid Post post,
+	                       Errors validation,
+	                       Model model) {
+
+		if (validation.hasErrors()) {
+			model.addAttribute("errors", validation);
+			model.addAttribute("post", post);
+			return "posts/create";
+		}
+
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		post.setUser(user);
+		postsDao.save(post);
 		model.addAttribute("post", post);
-		return "posts/create";
+		return "redirect:/posts/index";
 	}
 
 	@GetMapping("/posts/{id}/edit")
