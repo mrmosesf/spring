@@ -1,5 +1,6 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,5 +11,9 @@
 <h2>This is the view for an individual post.</h2>
 <h2>Title: <span th:text="${post.title}"></span></h2>
 <h2>Body: <span th:text="${post.text}"></span></h2>
+<h3>Email <span th:text="${post.user.email}"></span></h3>
+<div sec:authorize="hasRole('ADMIN')">
+    This content is only shown to administrators.
+</div>
 </body>
 </html>
