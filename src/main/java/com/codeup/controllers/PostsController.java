@@ -6,13 +6,18 @@ import com.codeup.repositories.UsersRepository;
 import com.codeup.svcs.PostSvc;
 import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,9 @@ public class PostsController {
 
 	private final PostSvc postsDao;
 	private final UsersRepository usersDao;
+
+	@Value("${file-upload-path}")
+	private String uploadPath;
 
 
 	@Autowired
@@ -72,6 +80,7 @@ public class PostsController {
 	                       @RequestParam(name = "text") String text,
 	                       @Valid Post post,
 	                       Errors validation,
+	                       @RequestParam(name = "file") MultipartFile uploadedFile,
 	                       Model model) {
 
 		if (validation.hasErrors()) {
@@ -80,8 +89,18 @@ public class PostsController {
 			return "posts/create";
 		}
 
+		String filename = uploadedFile.getOriginalFilename();
+		String filepath = Paths.get(uploadPath, filename).toString();
+		File destinationFile = new File(filepath);
+		try {
+			uploadedFile.transferTo(destinationFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		post.setUser(user);
+		post.setUploadPath(filename);
 		postsDao.save(post);
 		model.addAttribute("post", post);
 		return "redirect:/posts/index";
