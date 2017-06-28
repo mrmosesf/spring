@@ -1,6 +1,7 @@
 package com.codeup.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -31,6 +32,9 @@ public class Post {
 	@ManyToOne
 	@JsonManagedReference
 	private User user;
+
+	@Column(nullable = true)
+	private String uploadPath;
 
 	public Post(String title, String text, User user) {
 		this.title = title;
@@ -71,5 +75,13 @@ public class Post {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getUploadPath() {
+		return uploadPath;
+	}
+
+	public void setUploadPath(String uploadPath) {
+		this.uploadPath = uploadPath;
 	}
 }
