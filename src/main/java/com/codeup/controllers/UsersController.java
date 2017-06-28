@@ -5,6 +5,7 @@ import com.codeup.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -25,7 +26,13 @@ public class UsersController {
 
 
 	@PostMapping("/users/register")
-	public String saveUser(@Valid User user, Errors validation){
+	public String saveUser(@Valid User user, Errors validation, Model model){
+		if(!user.getPassword().equals(user.getPasswordConfirm())){
+			model.addAttribute("errors", "Passwords do not match!");
+			model.addAttribute("user", user);
+			return "/register";
+		}
+
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		usersDao.save(user);
 

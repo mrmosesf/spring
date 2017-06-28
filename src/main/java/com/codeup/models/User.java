@@ -30,6 +30,9 @@ public class User {
 	@JsonIgnore
 	private String password;
 
+	@Transient
+	private String passwordConfirm;
+
 	@OneToMany(mappedBy = "user")
 	@JsonBackReference
 	private List<Post> posts;
@@ -81,6 +84,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
 	}
 }
 

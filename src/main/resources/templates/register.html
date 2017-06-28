@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="fragments :: head">
     <meta charset="UTF-8"/>
     <title>Register</title>
 </head>
+<nav th:replace="fragments :: navbar"></nav>
 <body>
 <div class="container">
     <div class="row">
@@ -19,7 +21,13 @@
                 <label for="password">Password</label>
                 <input id="password" type="password" class="form-control" th:field="*{password}" />
 
-                <input class="btn" type="submit" />
+                <label for="passwordConfirm">Re-type password</label>
+                <input id="passwordConfirm" type="password" class="form-control" th:field="*{passwordConfirm}" />
+
+                <br/>
+
+                <button type="submit" class="btn btn-primary form-control">Register</button>
+
             </form>
         </div>
     </div>
