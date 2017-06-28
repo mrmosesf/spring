@@ -4,7 +4,6 @@ import com.codeup.models.Post;
 import com.codeup.models.User;
 import com.codeup.repositories.UsersRepository;
 import com.codeup.svcs.PostSvc;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,8 +17,6 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Moses Franco on 6/19/17

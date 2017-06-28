@@ -2,7 +2,6 @@ package com.codeup.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javafx.geometry.Pos;
 
 import javax.persistence.*;
 import java.util.List;
